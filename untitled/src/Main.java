@@ -11,7 +11,6 @@ public class Main {
             PaymentService paymentService = new PaymentService(dbHelper.getConnection());
             OrderServer orderService=new OrderServer(dbHelper.getConnection());
             ProductServer productServer=new ProductServer(dbHelper.getConnection());
-            Payment prod = paymentService.getPayment(1);
             System.out.println("\n=== Creating Records ===");
 
             Products product1 = productServer.createProduct("MacBook", "Laptop", 1200000, 12);
