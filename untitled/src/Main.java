@@ -1,6 +1,3 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-
 import java.sql.SQLException;
 import java.util.List;
 
@@ -9,17 +6,17 @@ public class Main {
         try (DatabaseHelper dbHelper = new DatabaseHelper()) {
             dbHelper.connect();
             PaymentService paymentService = new PaymentService(dbHelper.getConnection());
-            OrderServer orderService=new OrderServer(dbHelper.getConnection());
-            ProductServer productServer=new ProductServer(dbHelper.getConnection());
+            OrderService orderService=new OrderService(dbHelper.getConnection());
+            ProductService productService =new ProductService(dbHelper.getConnection());
             System.out.println("\n=== Creating Records ===");
 
-            Products product1 = productServer.createProduct("MacBook", "Laptop", 1200000, 12);
-            Products product2 = productServer.createProduct("IPhone 13 Pro", "Smartphone", 300000, 23);
-            Products product3 = productServer.createProduct("Oppo A9 2020", "Smartphone", 120000, 50);
-            Products product4=productServer.createProduct("Asus","laptop",600000,13);
-            Products product5=productServer.createProduct("Samsung Watch 6","Smartwatches",180000,11);
-            Products product6=productServer.createProduct("Airpods","earphones",130000,9);
-            Products product7=productServer.createProduct("Hwawei Matebook 3","laptop",350000,21);
+            Products product1 = productService.createProduct("MacBook", "Laptop", 1200000, 12);
+            Products product2 = productService.createProduct("IPhone 13 Pro", "Smartphone", 300000, 23);
+            Products product3 = productService.createProduct("Oppo A9 2020", "Smartphone", 120000, 50);
+            Products product4= productService.createProduct("Asus","laptop",600000,13);
+            Products product5= productService.createProduct("Samsung Watch 6","Smartwatches",180000,11);
+            Products product6= productService.createProduct("Airpods","earphones",130000,9);
+            Products product7= productService.createProduct("Hwawei Matebook 3","laptop",350000,21);
             System.out.println("Created products: " + product1.getName() + ", " + product2.getName()+" "+product3.getName()+product4.getName()+product5.getName()+product6.getName()+product7.getName());
 
 
@@ -72,6 +69,35 @@ public class Main {
 
             List<Payment> remainingPayments = paymentService.getPaymentsByOrder(order1.getOrderId());
             System.out.println("Remaining payments for Order " + order1.getOrderId() + ": " + remainingPayments.size());
+
+
+            boolean productDeleted= productService.deleteProduct(2);
+            System.out.println("Deleted product "+product2.getProductId()+": "+productDeleted);
+
+            boolean productUpdated=productService.updateProduct(product5);
+            System.out.println("Product status updated: "+ productUpdated);
+
+            List<Products> allProducts=productService.getAllProducts();
+            System.out.println("Product list: "+ allProducts.toString());
+
+            Products products=productService.getProduct(7);
+            System.out.println("Information about product 7 : "+products);
+
+            boolean orderDeleted=orderService.deleteOrder(3);
+            System.out.println("Deleted order: "+order2.getOrderId()+": "+orderDeleted);
+
+            boolean orderUpdated=orderService.updateOrder(order4);
+            System.out.println("Order status updated: "+ orderUpdated);
+
+            List<Order> allOrders=orderService.getAllOrders();
+            System.out.println("Order list: "+ allOrders.toString());
+
+            PaymentStrategy paymentStrategy=new CreditCardPayment();
+            paymentStrategy.processPayment(product5.getPrice());
+
+            PaymentStrategy paymentStrategy1=new OnlinePayment();
+            paymentStrategy1.processPayment(product7.getPrice());
+
 
         } catch (SQLException e) {
             System.err.println("Database error occurred: " + e.getMessage());

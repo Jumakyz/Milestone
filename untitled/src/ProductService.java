@@ -3,11 +3,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.Connection;
 
-
-public class ProductServer {
+public class ProductService {
     private Connection connection;
 
-    public ProductServer(Connection connection){
+    public ProductService(Connection connection){
         this.connection=connection;
     }
 
