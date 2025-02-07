@@ -2,10 +2,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-             public class OrderService {
-                    private Connection connection;
+public class OrderService {
+    private Connection connection;
 
-                    public OrderService(Connection connection){
+    public OrderService(Connection connection){
                         this.connection=connection;
                     }
                     private static final String INSERT_ORDER = "INSERT INTO orders (product_id, quantity, total_price, status) VALUES (?, ?, ?, ?) RETURNING id";
